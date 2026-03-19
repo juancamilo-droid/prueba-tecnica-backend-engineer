@@ -27,11 +27,9 @@ async function main() {
     });
 
     const shutdown = async () => {
-      logger.info('Shutting down gracefully...');
       server.close(async () => {
         const kafkaBroker = container.get<IKafkaEventBroker>(TYPES.KafkaEventBrokerProvider);
         await kafkaBroker.disconnect();
-        logger.info('Closed out remaining connections.');
         process.exit(0);
       });
     };
