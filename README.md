@@ -101,9 +101,18 @@ Puedes utilizar Postman, Insomnia o cURL para interactuar con la API.
 curl -X POST http://localhost:3000/card-issue \
   -H "Content-Type: application/json" \
   -d '{
-    "userId": "usr_12345",
-    "type": "CREDIT",
-    "forceError": true 
+    "customer": {
+      "documentType": "DNI",
+      "documentNumber": "47117824",
+      "fullName": "Gian Munoz",
+      "age": 34,
+      "email": "gian.munoz@test.com"
+    },
+    "product": {
+      "type": "VISA",
+      "currency": "USD"
+    },
+    "forceError": true
   }'
 ```
 *(Nota: El parámetro `forceError: true` indica al procesador que, si la simulación bancaria falla, debe aplicar la lógica de reintentos exponenciales).*
