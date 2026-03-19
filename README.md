@@ -127,7 +127,7 @@ El sistema utiliza una coreografía de eventos para procesar la emisión de tarj
     * Simula la integración bancaria con un *delay* aleatorio (200-500ms) y una tasa de fallo programada (20%).
     * **Si tiene éxito:** Publica los datos de la tarjeta en `io.cards.issued.v1`.
 3. **`card-issuer` (Actualización de Estado):**
-    * Escucha de forma asíncrona `io.cards.issued.v1` o `io.card.rejected.v1`.
+    * Escucha de forma asíncrona `io.cards.issued.v1`.
     * Busca la tarjeta localmente mediante el ID original y actualiza su estado a `issued`.
 
 ### Resiliencia y Manejo de Errores (Retries & DLQ)
