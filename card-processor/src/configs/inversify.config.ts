@@ -14,6 +14,8 @@ import { ICardProcessorService } from '../interfaces/cards/card-processor.interf
 import { CardProcessorService } from '../services/cards/card-processor.service';
 import { IKafkaEventBroker } from '../interfaces/kafka/kafka-event-broker.interface';
 import { KafkaEventBrokerProvider } from '../providers/kafka/kafka-event-broker.provider';
+import { ICardRetriesService } from '../interfaces/cards/card-retries.interface';
+import { CardRetriesService } from '../services/cards/card-retries.service';
 
 const container = new Container();
 
@@ -23,5 +25,6 @@ container.bind<IEventHandler<ICardIssuePayload>>(TYPES.CardRequestedHandler).to(
 container.bind<ICardEmissionService>(TYPES.CardEmissionService).to(CardEmissionService).inSingletonScope();
 container.bind<ICardProcessorService>(TYPES.CardProcessorService).to(CardProcessorService).inSingletonScope();
 container.bind<IKafkaEventBroker>(TYPES.KafkaEventBrokerProvider).to(KafkaEventBrokerProvider).inSingletonScope();
+container.bind<ICardRetriesService>(TYPES.CardRetriesService).to(CardRetriesService).inSingletonScope();
 
 export { container };

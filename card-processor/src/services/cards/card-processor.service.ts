@@ -4,10 +4,11 @@ import pino from 'pino';
 import { ICardIssuePayload } from '../../interfaces/cards/card-issue-payload.interface';
 import { ICardProcessorService } from '../../interfaces/cards/card-processor.interface';
 import { TYPES } from '../../types';
-import { ICardEmission, ICardEmissionService } from '../../interfaces/cards/card-emission.interface';
+import { ICardEmission } from '../../interfaces/cards/card-emission.interface';
 import { IKafkaEventBroker } from '../../interfaces/kafka/kafka-event-broker.interface';
 import { IKafkaCloudEvent } from '../../interfaces/kafka/kafka-cloud-event.interface';
 import { KAFKA_TOPICS } from '../../shared/constants';
+import { ICardRetriesService } from '../../interfaces/cards/card-retries.interface';
 
 @injectable()
 export class CardProcessorService implements ICardProcessorService {
@@ -24,16 +25,16 @@ export class CardProcessorService implements ICardProcessorService {
   });
 
   constructor(
-    @inject(TYPES.CardEmissionService) private readonly cardEmissionService: ICardEmissionService,
+    @inject(TYPES.CardRetriesService) private readonly cardRetriesService: ICardRetriesService,
     @inject(TYPES.KafkaEventBrokerProvider) private readonly kafkaEventBroker: IKafkaEventBroker,
   ) {}
   
   async approve(cardProcessor: ICardIssuePayload): Promise<void> {
     this.logger.info(`Approving card request: ${JSON.stringify(cardProcessor)}`);
-    const card = await this.cardEmissionService.generateCard(cardProcessor.cardId);
+    const card = await this.cardRetriesService.processWithRetries(cardProcessor);
 
-    if (!card) {
-      return;
+    if (!card) {      
+      return; 
     }
 
     this.publishCardIssued(card);

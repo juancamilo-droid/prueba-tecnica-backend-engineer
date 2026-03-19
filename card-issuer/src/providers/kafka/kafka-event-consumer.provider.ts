@@ -29,11 +29,11 @@ export class KafkaEventConsumerProvider implements IKafkaEventConsumer {
     @inject(TYPES.EventDispatcher) private eventDispatcher: EventDispatcher
   ) {
     const kafka = new Kafka({
-      clientId: process.env.KAFKA_CLIENT_ID || 'card-processor-client',
+      clientId: process.env.KAFKA_CLIENT_ID || 'card-issuer-client',
       brokers: [process.env.KAFKA_BROKERS || 'localhost:9092'],
     });
 
-    this.consumer = kafka.consumer({ groupId: process.env.KAFKA_GROUP_ID || 'card-processor-group' });
+    this.consumer = kafka.consumer({ groupId: process.env.KAFKA_GROUP_ID || 'card-issuer-group' });
   }
 
   async connect(): Promise<void> {
